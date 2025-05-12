@@ -1,0 +1,11 @@
+# Ignore Visual Studio and build files
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.exe
+*.dll
+*.cache
+*.pdb
+*.log
