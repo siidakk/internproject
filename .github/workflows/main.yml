@@ -23,15 +23,15 @@ jobs:
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
-      - name: Stop App Pool 'mywebsite'
+      - name: Stop Website 'mywebsite'
         shell: pwsh
         run: |
           Import-Module WebAdministration
-          if ((Get-WebAppPoolState -Name "mywebsite").Value -eq "Started") {
-            Stop-WebAppPool -Name "mywebsite"
-            Write-Host "App Pool 'mywebsite' stopped successfully."
+          if ((Get-WebSite -Name "mywebsite").State -eq "Started") {
+            Stop-WebSite -Name "mywebsite"
+            Write-Host "Website 'mywebsite' stopped successfully."
           } else {
-            Write-Host "App Pool 'mywebsite' is already stopped."
+            Write-Host "Website 'mywebsite' is already stopped."
           }
 
       - name: Deploy to IIS
@@ -45,13 +45,13 @@ jobs:
           }
           Copy-Item -Path "./publish/*" -Destination $destination -Recurse
 
-      - name: Start App Pool 'mywebsite'
+      - name: Start Website 'mywebsite'
         shell: pwsh
         run: |
           Import-Module WebAdministration
-          if ((Get-WebAppPoolState -Name "mywebsite").Value -ne "Started") {
-            Start-WebAppPool -Name "mywebsite"
-            Write-Host "App Pool 'mywebsite' started successfully."
+          if ((Get-WebSite -Name "mywebsite").State -ne "Started") {
+            Start-WebSite -Name "mywebsite"
+            Write-Host "Website 'mywebsite' started successfully."
           } else {
-            Write-Host "App Pool 'mywebsite' is already running."
+            Write-Host "Website 'mywebsite' is already running."
           }
