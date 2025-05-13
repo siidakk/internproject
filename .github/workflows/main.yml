@@ -26,8 +26,9 @@ jobs:
       - name: Stop Website 'mywebsite'
         shell: cmd
         run: |
-          net stop "W3SVC"
-          appcmd stop site /site.name:"mywebsite"
+          set PATH=%PATH%;C:\Windows\System32\inetsrv
+          runas /user:Administrator "net stop W3SVC"
+          runas /user:Administrator "appcmd stop site /site.name:'mywebsite'"
 
       - name: Deploy to IIS
         shell: cmd
@@ -43,5 +44,6 @@ jobs:
       - name: Start Website 'mywebsite'
         shell: cmd
         run: |
-          appcmd start site /site.name:"mywebsite"
-          net start "W3SVC"
+          set PATH=%PATH%;C:\Windows\System32\inetsrv
+          runas /user:Administrator "appcmd start site /site.name:'mywebsite'"
+          runas /user:Administrator "net start W3SVC"
