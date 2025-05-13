@@ -19,7 +19,7 @@ jobs:
       #   run: dotnet restore internproject/internproject.csproj
 
       - name: Publish .NET Project
-        run: dotnet publish internproject/WebApplication1/WebApplication1.csproj -c Release -o ./publish
+        run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
       - name: Deploy to IIS
         shell: pwsh
