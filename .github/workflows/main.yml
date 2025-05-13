@@ -11,15 +11,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Uncomment if needed
-      # - name: Setup .NET SDK
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #     dotnet-version: '8.0.x'
-
-      # - name: Restore Dependencies
-      #   run: dotnet restore WebApplication1/WebApplication1.csproj
-
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
@@ -27,8 +18,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Windows\System32\inetsrv
-          runas /user:Administrator "net stop W3SVC"
-          runas /user:Administrator "appcmd stop site /site.name:'mywebsite'"
+          appcmd stop site /site.name:"mywebsite"
 
       - name: Deploy to IIS
         shell: cmd
@@ -45,5 +35,4 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Windows\System32\inetsrv
-          runas /user:Administrator "appcmd start site /site.name:'mywebsite'"
-          runas /user:Administrator "net start W3SVC"
+          appcmd start site /site.name:"mywebsite"
