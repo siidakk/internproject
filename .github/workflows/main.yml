@@ -1,31 +1,35 @@
 name: Deploy .NET App to IIS
+
 on:
   push:
     branches:
-      - master
+      - master 
+
 jobs:
   deploy:
-    runs-on: self hosted
-
+    runs-on: self-hosted  
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Publish .NET Project
-      run: dotnet publish internproject/internproject.csproj -c Release -o ./publish
+      - name: Restore Dependencies
+        run: dotnet restore internproject/internproject.csproj
 
-    - name: Deploy to IIS
-      run: | 
-        $destination = "C:\inetpub\wwwroot\mywebsite"
-        if(Test-Path $destination){
-          Remove-Item "$destination\*" -Recurse -Force
-        } else{
-          New-Item -Path $destination -ItemType Directory
-        }
-        Copy-Item -Path "./publish/*" -Destination $destination -Recurse
-      shell: pwsh
+      - name: Publish .NET Project
+        run: dotnet publish internproject/internproject.csproj -c Release -o ./publish
+
+      - name: Deploy to IIS
+        shell: pwsh
+        run: |
+          $destination = "C:\inetpub\wwwroot\mywebsite"
+          if (Test-Path $destination) {
+            Remove-Item "$destination\*" -Recurse -Force
+          } else {
+            New-Item -Path $destination -ItemType Directory
+          }
+          Copy-Item -Path "./publish/*" -Destination $destination -Recurse
