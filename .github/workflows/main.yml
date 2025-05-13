@@ -24,34 +24,24 @@ jobs:
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
       - name: Stop Website 'mywebsite'
-        shell: pwsh
+        shell: cmd
         run: |
-          Import-Module WebAdministration
-          if ((Get-WebSite -Name "mywebsite").State -eq "Started") {
-            Stop-WebSite -Name "mywebsite"
-            Write-Host "Website 'mywebsite' stopped successfully."
-          } else {
-            Write-Host "Website 'mywebsite' is already stopped."
-          }
+          net stop "W3SVC"
+          appcmd stop site /site.name:"mywebsite"
 
       - name: Deploy to IIS
-        shell: pwsh
+        shell: cmd
         run: |
-          $destination = "D:\myapplication"
-          if (Test-Path $destination) {
-            Remove-Item "$destination\*" -Recurse -Force
-          } else {
-            New-Item -Path $destination -ItemType Directory
-          }
-          Copy-Item -Path "./publish/*" -Destination $destination -Recurse
+          set destination=D:\myapplication
+          if exist %destination% (
+            del /q /s %destination%\*
+          ) else (
+            mkdir %destination%
+          )
+          xcopy .\publish\* %destination% /s /e /y
 
       - name: Start Website 'mywebsite'
-        shell: pwsh
+        shell: cmd
         run: |
-          Import-Module WebAdministration
-          if ((Get-WebSite -Name "mywebsite").State -ne "Started") {
-            Start-WebSite -Name "mywebsite"
-            Write-Host "Website 'mywebsite' started successfully."
-          } else {
-            Write-Host "Website 'mywebsite' is already running."
-          }
+          appcmd start site /site.name:"mywebsite"
+          net start "W3SVC"
