@@ -24,7 +24,7 @@ jobs:
       - name: Deploy to IIS
         shell: pwsh
         run: |
-          $destination = "C:\inetpub\wwwroot\mywebsite"
+          $destination = "D:\myapplication"
           if (Test-Path $destination) {
             Remove-Item "$destination\*" -Recurse -Force
           } else {
