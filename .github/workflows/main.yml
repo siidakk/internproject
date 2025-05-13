@@ -1,9 +1,7 @@
 name: Deploy .NET App to IIS
 
 on:
-  push:
-    branches:
-      - master 
+  workflow_dispatch:
 
 jobs:
   deploy:
