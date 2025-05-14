@@ -11,10 +11,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Playwright browsers Install
-        run: |
-          dotnet add package Microsoft.Playwright
-          playwright install
+      # - name: Playwright browsers Install
+      #   run: |
+      #     dotnet add package Microsoft.Playwright
+      #     playwright install
           
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
