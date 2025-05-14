@@ -17,7 +17,19 @@ jobs:
       - name: Restore .NET Project
         run: dotnet restore WebApplication1/WebApplication1.csproj
 
+      - name: Check if Playwright browsers are installed
+        id: check-playwright-install
+        run: |
+          if [ -d "$(pwd)/WebApplication1/.local-browsers" ]; then
+            echo "Playwright browsers are already installed. Skipping install."
+            echo "skip=true" >> $GITHUB_ENV
+          else
+            echo "Playwright browsers not found. Installing..."
+            echo "skip=false" >> $GITHUB_ENV
+          fi
+
       - name: Install Playwright browsers
+        if: env.skip == 'false'
         run: |
           playwright install
 
