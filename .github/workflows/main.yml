@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build_project:
     runs-on: self-hosted
-
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -14,18 +14,26 @@ jobs:
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
         
+  run_tests:
+    runs-on: self-hosted
+    needs: build_project
+
+    steps:
+      # ✅ Run Playwright tests
+      - name: Run Playwright tests
+        run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
+
       - name: Install Playwright and Browsers
         run: |
           cd WebApplication1
           dotnet add package Microsoft.Playwright
           dotnet build
           playwright install
+  deploy_iis:
+    runs-on: self-hosted
+    needs: run_tests
 
-      # ✅ Run Playwright tests
-      - name: Run Playwright tests
-        run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
-
-
+    steps:
       - name: Stop Website 'mywebsite'
         shell: cmd
         run: |
