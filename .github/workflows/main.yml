@@ -27,11 +27,13 @@ jobs:
             Write-Host "Playwright browsers not found. Installing..."
             echo "skip=false" >> $env:GITHUB_ENV
           }
-
+      
       - name: Install Playwright browsers
         if: env.skip == 'false'
         run: |
+          dotnet add package Microsoft.Playwright
           playwright install
+
 
 
       - name: Publish .NET Project
