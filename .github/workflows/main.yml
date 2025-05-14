@@ -1,0 +1,48 @@
+name: Deploy .NET App to IIS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 🔧 Install Playwright CLI and browsers
+      - name: Install Playwright CLI and browsers
+        run: |
+          dotnet tool install --global Microsoft.Playwright.CLI
+          playwright install
+          
+      - name: Publish .NET Project
+        run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
+
+      # ✅ Run Playwright tests
+      - name: Run Playwright tests
+        run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
+
+      - name: Stop Website 'mywebsite'
+        shell: cmd
+        run: |
+          set PATH=%PATH%;C:\Windows\System32\inetsrv
+          appcmd stop site /site.name:"mywebsite"
+
+      - name: Deploy to IIS
+        shell: cmd
+        run: |
+          set destination=D:\myapplication
+          if exist %destination% (
+            del /q /s %destination%\*
+          ) else (
+            mkdir %destination%
+          )
+          xcopy .\publish\* %destination% /s /e /y
+
+      - name: Start Website 'mywebsite'
+        shell: cmd
+        run: |
+          set PATH=%PATH%;C:\Windows\System32\inetsrv
+          appcmd start site /site.name:"mywebsite"
