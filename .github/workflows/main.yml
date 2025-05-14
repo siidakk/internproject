@@ -22,7 +22,7 @@ jobs:
 
       # ✅ Run Playwright tests
       - name: Run Playwright tests
-        run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
+        run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj  
 
       - name: Stop Website 'mywebsite'
         shell: cmd
