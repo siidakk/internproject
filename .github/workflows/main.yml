@@ -13,10 +13,14 @@ jobs:
 
       - name: Add Playwright NuGet package
         run: dotnet add WebApplication1/WebApplication1.csproj package Microsoft.Playwright
-        
+
+      - name: Restore .NET Project
+        run: dotnet restore WebApplication1/WebApplication1.csproj
+
       - name: Install Playwright browsers
         run: |
           playwright install
+
 
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
@@ -30,7 +34,7 @@ jobs:
         run: |
           set PATH=%PATH%;C:\Windows\System32\inetsrv
           appcmd stop site /site.name:"mywebsite"
-
+          
       - name: Deploy to IIS
         shell: cmd
         run: |
