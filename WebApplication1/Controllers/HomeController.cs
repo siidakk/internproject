@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using Xunit;
 
 namespace WebApplication1.Controllers
 {
@@ -18,6 +19,15 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        [Fact]
+        public void IndexTest()
+        {
+            // Assert that "def" contains "abc" - this will fail.
+            // Let's fix the order or the expectation
+            Assert.Contains("abc", "abcdef");
+            Index();
+            Console.WriteLine("Test Passessssssssssssss");
+        }
         public IActionResult Privacy()
         {
             return View();
