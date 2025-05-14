@@ -15,10 +15,7 @@ jobs:
         run: |
           dotnet add package Microsoft.Playwright
           playwright install
-
-      - name: Restore .NET Project
-        run: dotnet restore WebApplication1/WebApplication1.csproj
-
+          
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
