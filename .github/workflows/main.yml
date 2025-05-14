@@ -11,11 +11,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 🔧 Install Playwright CLI and browsers
-      - name: Install Playwright CLI and browsers
-        run: |
-          dotnet tool install --global Microsoft.Playwright.CLI
-          playwright install
+      # # 🔧 Install Playwright CLI and browsers
+      # - name: Install Playwright CLI and browsers
+      #   run: |
+      #     dotnet tool install --global Microsoft.Playwright.CLI
+      #     playwright install
           
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
