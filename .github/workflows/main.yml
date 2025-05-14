@@ -21,7 +21,7 @@ jobs:
     if: failure()
     steps:
       - name: Notify build failed
-        run: "Build failed!!"
+        run: echo"Build failed!!"
   run_tests:
     runs-on: self-hosted
     needs: build_project
