@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Notify build failed
         run: echo "Build failed!!"
+
+        
   run_tests:
     runs-on: self-hosted
     needs: build_project
@@ -37,6 +39,15 @@ jobs:
           dotnet add package Microsoft.Playwright
           dotnet build
           playwright install
+  run_tests_failed:
+      runs-on: self-hosted
+      needs: run_tests
+
+      if: failure()
+      steps:
+        - name: Notify runs tests failed
+          run: echo "Runs Tests Failed!!"    
+      
   deploy_iis:
     runs-on: self-hosted
     needs: run_tests
@@ -64,3 +75,9 @@ jobs:
         run: |
           set PATH=%PATH%;C:\Windows\System32\inetsrv
           appcmd start site /site.name:"mywebsite"
+  deploy_iis_failed:
+    runs-on: self-hosted
+    needs: deploy_iis
+    steps:
+      - name: Notify deploy tests failed
+        run: echo "Deploy Failed!!"
