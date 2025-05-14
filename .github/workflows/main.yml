@@ -11,18 +11,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 🔧 Install Playwright CLI and browsers
-      - name: Install Playwright CLI and browsers
+      - name: Install Playwright and Browsers
         run: |
-          dotnet tool install --global Microsoft.Playwright.CLI
+          cd WebApplication1
+          dotnet add package Microsoft.Playwright
+          dotnet build
           playwright install
-          
-      - name: Publish .NET Project
-        run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
       # ✅ Run Playwright tests
       - name: Run Playwright tests
         run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
+
+      - name: Publish .NET Project
+        run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
 
       - name: Stop Website 'mywebsite'
         shell: cmd
