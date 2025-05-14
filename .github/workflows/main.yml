@@ -11,30 +11,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Add Playwright NuGet package
-        run: dotnet add WebApplication1/WebApplication1.csproj package Microsoft.Playwright
+      - name: Playwright browsers Install
+        run: |
+          dotnet add WebApplication1/WebApplication1.csproj package Microsoft.Playwright
+          playwright install
 
       - name: Restore .NET Project
         run: dotnet restore WebApplication1/WebApplication1.csproj
-
-      - name: Check if Playwright browsers are installed
-        id: check-playwright-install
-        run: |
-          if (Test-Path "$(pwd)/WebApplication1/.local-browsers") {
-            Write-Host "Playwright browsers are already installed. Skipping install."
-            echo "skip=true" >> $env:GITHUB_ENV
-          } else {
-            Write-Host "Playwright browsers not found. Installing..."
-            echo "skip=false" >> $env:GITHUB_ENV
-          }
-      
-      - name: Install Playwright browsers
-        if: env.skip == 'false'
-        run: |
-          dotnet add package Microsoft.Playwright
-          playwright install
-
-
 
       - name: Publish .NET Project
         run: dotnet publish WebApplication1/WebApplication1.csproj -c Release -o ./publish
