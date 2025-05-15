@@ -34,12 +34,12 @@ jobs:
       - name: Run Playwright tests
         run: dotnet test WebApplication1.Test/WebApplication1.Test.csproj
 
-      - name: Install Playwright and Browsers
-        run: |
-          cd WebApplication1
-          dotnet add package Microsoft.Playwright
-          dotnet build
-          playwright install
+      # - name: Install Playwright and Browsers
+      #   run: |
+      #     cd WebApplication1
+      #     dotnet add package Microsoft.Playwright
+      #     dotnet build
+      #     playwright install
           
   run_tests_failed:
       runs-on: self-hosted
